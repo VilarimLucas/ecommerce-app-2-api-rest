@@ -68,16 +68,14 @@ Com o arquivo swagger.json gerado, você pode criar a documentação em formato 
    npx @redocly/cli build-docs swagger.json -o docs.html
    ```
 
-### Acessando a Documentação
+   ### Acessando a Documentação
 
-Após gerar o arquivo docs.html, você pode visualizá-lo abrindo o arquivo no navegador.
-
-Se você deseja compartilhar a documentação online, pode fazer isso configurando o GitHub Pages para servir o arquivo docs.html.
-
-Link para a documentação (a ser configurado no GitHub Pages):
-
-Documentação da API <!-- Coloque o link aqui após configurar o GitHub Pages -->
-
+   Após gerar o arquivo `docs.html`, você pode visualizá-lo abrindo o arquivo no navegador.
+   
+   A documentação da API também está disponível online através do GitHub Pages. Você pode acessá-la no seguinte link:
+   
+   [Documentação da API](https://vilarimlucas.github.io/ecommerce-app-2-api-rest/docs.html)
+   
 ### Licença
 
 Este projeto está licenciado sob a licença ISC. Veja o arquivo LICENSE para mais detalhes.
