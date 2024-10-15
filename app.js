@@ -44,6 +44,8 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Middleware para servir imagens estáticas
+app.use('/images', express.static('public/uploads/imageProducts'));
 
 // Usar as rotas definidas no arquivo routes.js
 app.use(routes);

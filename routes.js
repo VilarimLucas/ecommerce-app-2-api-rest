@@ -1,7 +1,7 @@
-// routes.js
 const express = require('express');
 const router = express.Router();
 const ProductController = require('./controllers/ProductController');
+const upload = require('./middlewares/uploadConfig'); // Middleware de upload
 
 /**
  * @swagger
@@ -11,7 +11,6 @@ const ProductController = require('./controllers/ProductController');
  *       type: object
  *       required:
  *         - productName
- *         - productImage
  *         - productPrice
  *         - productDescription
  *       properties:
@@ -23,7 +22,7 @@ const ProductController = require('./controllers/ProductController');
  *           description: Nome do produto
  *         productImage:
  *           type: string
- *           description: URL da imagem do produto
+ *           description: Nome da imagem do produto
  *         productPrice:
  *           type: number
  *           description: Preço do produto
@@ -32,7 +31,7 @@ const ProductController = require('./controllers/ProductController');
  *           description: Descrição do produto
  *       example:
  *         productName: "Produto Exemplo"
- *         productImage: "http://example.com/image.png"
+ *         productImage: "image.png"
  *         productPrice: 99.99
  *         productDescription: "Este é um produto de exemplo"
  */
@@ -41,14 +40,24 @@ const ProductController = require('./controllers/ProductController');
  * @swagger
  * /produto:
  *   post:
- *     summary: Adiciona um novo produto
+ *     summary: Adiciona um novo produto com upload de imagem
  *     tags: [Product]
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             properties:
+ *               productName:
+ *                 type: string
+ *               productPrice:
+ *                 type: number
+ *               productDescription:
+ *                 type: string
+ *               productImage:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Produto adicionado com sucesso
@@ -56,14 +65,16 @@ const ProductController = require('./controllers/ProductController');
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Erro ao adicionar produto
  */
-router.post('/produto', ProductController.addProduct);
+router.post('/produto', upload.single('productImage'), ProductController.addProduct);
 
 /**
  * @swagger
  * /produto/{id}:
  *   put:
- *     summary: Atualiza um produto por ID
+ *     summary: Atualiza um produto por ID com upload de nova imagem
  *     tags: [Product]
  *     parameters:
  *       - in: path
@@ -75,9 +86,19 @@ router.post('/produto', ProductController.addProduct);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             properties:
+ *               productName:
+ *                 type: string
+ *               productPrice:
+ *                 type: number
+ *               productDescription:
+ *                 type: string
+ *               productImage:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Produto atualizado com sucesso
@@ -88,7 +109,7 @@ router.post('/produto', ProductController.addProduct);
  *       404:
  *         description: Produto não encontrado
  */
-router.put('/produto/:id', ProductController.updateProduct);
+router.put('/produto/:id', upload.single('productImage'), ProductController.updateProduct);
 
 /**
  * @swagger
@@ -161,7 +182,7 @@ router.get('/produtos', ProductController.getAllProducts);
  * @swagger
  * /produto/{id}:
  *   delete:
- *     summary: Exclui um produto por ID
+ *     summary: Exclui um produto por ID e remove sua imagem
  *     tags: [Product]
  *     parameters:
  *       - in: path
